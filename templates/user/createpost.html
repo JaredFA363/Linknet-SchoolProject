@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}CREATE POST{% endblock %}
+
+{% block body %}
+<h1 align = "center">Create Post</h1>
+<br>
+<form method = "POST">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}  
+    <textarea name = "title" id = "title" class = "form-control" placeholder = "title"></textarea>
+    <textarea name = "body" id = "body" class = "form-control" placeholder = "body"></textarea>
+    <div align = "center">
+        <br>
+        <button type="submit" class="btn btn-primary">Post!</button>
+    </div>
+</form>
+
+{% endblock %}
+
+

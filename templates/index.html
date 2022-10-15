@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block  head %}
+<title>Linknet - Home</title>
+<style>
+    body {
+    background: #dae0e6 !important;
+    margin-top: 75px !important;
+    border: transparent !important;
+    padding-bottom: 20px;
+}
+label {
+    cursor: pointer;
+    display: block;
+    padding: 10px;
+    margin: 3px;
+    background-color: #dae0e6;
+    border: 0px ;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<ul class = "list-group">
+    <nav class = "navbar navbar-expand-lg fixed-top navbar-light bg-light style=" style ="background-color: #fff !important;">
+        <div class="container">
+            <a class="navbar-brand" href="/">Linknet</a>
+            <button class = "navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label = "Toggle navigation">
+                <span class = "navbar-toggler-icon"></span>
+            </button>
+            <form class="mx-2 my-auto d-inline w-100" style="margin-left: 100px !important; margin-right: 100px !important;">
+                <input class="form-control mr-sm-2" type="search" placeholders="Search" aria-label="Search">
+            </form>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ml-auto">
+                {% if "user" in session %}
+                    <a class = "nav-item btn btn-outline-primary mx-2" href="/logout">Logout</a>
+                    <a class = "nav-item btn btn-outline-primary mx-2" href="/message">Msg</a>
+                    <a class = "nav-item btn btn-outline-primary mx-2" href="/user">profile</a>
+                    <a class = "nav-item btn btn-outline-primary mx-2" href="/createpost">Post</a>
+                {% else %}
+                    <a class = "nav-item btn btn-outline-primary mx-2" href="/login">Login</a>
+                    <a class = "nav-item btn btn-primary" href="/signup">Signup</a>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>    
+    <div class="container">
+        <div class ="row">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for msg in messages %}
+                        <p>{{msg}}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}  
+            {% for post in posts %}
+                <div class ="col-sm-8">
+                    <div class="card">
+                        <label for="dummy1"></label>
+                        <div class = "card-header">
+                            <strong>
+                                {%if "user" in session%}
+                                    {% if g.user.has_liked_post(post) %}
+                                        <button class = "btn btn-light btn-sm">
+                                            <a href="{{ url_for('post_like', post_id=post.id, action='unlike') }}" class="fas fa-arrow-up">Unlike</a>
+                                            <li class = "list-group-item">{{ post.likes.count() }} like</li>
+                                        </button>
+                                    {% else %}
+                                        <button class = "btn btn-light btn-sm">
+                                            <a href="{{ url_for('post_like', post_id=post.id, action='like') }}" class="fas fa-arrow-up">Like</a>
+                                            <li class = "list-group-item">{{ post.likes.count() }} like</li>
+                                        </button>
+                                    {% endif %}
+                                    {% if g.user.has_disliked_post(post) %}
+                                        <button class="btn btn-light btn-sm">
+                                            <a href="{{ url_for('post_dislike', post_id=post.id, action='undislike') }}" class ="fas fa-arrow-down">Undislike</a>
+                                            <li class = "list-group-item">{{ post.dislikes.count() }} dislike</li>
+                                        </button>
+                                    {% else %}
+                                        <button class="btn btn-light btn-sm">
+                                            <a href="{{ url_for('post_dislike', post_id=post.id, action='dislike') }}" class ="fas fa-arrow-down">Dislike</a>
+                                            <li class = "list-group-item">{{ post.dislikes.count() }} dislike</li>
+                                        </button>
+                                    {%endif%}
+                                {%endif%}
+                            </strong> Link Posted <span class="text-muted" style="font-size: 10pt;"><li class = "list-group-item">by {{post.post_author}} on {{ post.create_date }}</li></span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class = "card-title"><li class = "list-group-item">{{ post.title }}</li></h5>
+                            <p class ="card-text">
+                                <li class = "list-group-item">{{ post.body }}</li>
+                            </p>
+                        </div>
+                        <div class = "card-footer text-muted">
+                            <a href="{{url_for('post_comments', post_id = post.id)}}" class="btn btn-light btn-sm"><i class="fas fa-comment"></i>Comments</a>
+                            <a href="" class="btn btn-light btn-sm"><i class="fas fa-share"></i> Share</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</ul>
+{% endblock %}

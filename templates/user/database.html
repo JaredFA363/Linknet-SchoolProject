@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %} Database {% endblock %}
+{% block body %}
+    {% for item in values%}
+        <p> Username: {{item.username}} Email: {{item.email}} Password: {{item.password}} Datecreated: {{item.datecreated}}</p>
+    {% endfor %}
+{% endblock %}

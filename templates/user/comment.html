@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}COMMENTS{% endblock %}
+
+{% block body %}
+<h1 align = "center">Comments</h1>
+<div class="container">
+    <div class ="row">
+            <div class ="col-sm-8">
+                <div class="card">
+                    <label for="dummy1"></label>
+                    <div class = "card-header">
+                        <strong>
+                        </strong> Link Posted <span class="text-muted" style="font-size: 10pt;"><li class = "list-group-item">by {{post.post_author}} on {{ post.create_date }}</li></span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class = "card-title"><li class = "list-group-item">{{ post.title }}</li></h5>
+                        <p class ="card-text">
+                            <li class = "list-group-item">{{ post.body }}</li>
+                        </p>
+                    </div>
+                    <div class = "card-footer text-muted">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<form method = "POST">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}  
+    <textarea name = "comment" id = "comment" class = "form-control" placeholder = "comment"></textarea>
+    <div align = "center">
+        <br>
+        <button type="submit" class="btn btn-primary">Comment</button>
+    </div>
+</form>
+
+<div class="container">
+    <div class ="row">
+        {% for comment in post.comments %}
+            <div class ="col-sm-8">
+                <div class="card">
+                    <label for="dummy1"></label>
+                    <div class = "card-header">
+                        <strong>
+                            {% if g.user.has_liked_comment(comment) %}
+                                <button class = "btn btn-light btn-sm">
+                                    <a href="{{ url_for('comment_like',post_id=post.id, comment_id=comment.id, action='unlike') }}" class="fas fa-arrow-up">Unlike</a>
+                                    <li class = "list-group-item">{{ comment.likes.count() }} like</li>
+                                </button>
+                            {% else %}
+                                <button class = "btn btn-light btn-sm">
+                                    <a href="{{ url_for('comment_like',post_id=post.id, comment_id=comment.id, action='like') }}" class="fas fa-arrow-up">Like</a>
+                                    <li class = "list-group-item">{{ comment.likes.count() }} like</li>
+                                </button>
+                            {% endif %}
+                            {% if g.user.has_disliked_comment(comment) %}
+                                <button class="btn btn-light btn-sm">
+                                    <a href="{{ url_for('comment_dislike',post_id=post.id, comment_id=comment.id, action='undislike') }}" class ="fas fa-arrow-down">Undislike</a>
+                                    <li class = "list-group-item">{{ comment.dislikes.count() }} dislike</li>
+                                </button>
+                            {%else%}
+                                <button class="btn btn-light btn-sm">
+                                    <a href="{{ url_for('comment_dislike',post_id=post.id, comment_id=comment.id, action='dislike') }}" class ="fas fa-arrow-down">Dislike</a>
+                                    <li class = "list-group-item">{{ comment.dislikes.count() }} dislike</li>
+                                </button>
+                            {%endif%}
+                        </strong> Link Posted <span class="text-muted" style="font-size: 10pt;"><li class = "list-group-item">by {{comment.comment_author}} </li></span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class = "card-title"><li class = "list-group-item">{{ comment.text }}</li></h5>
+                    </div>
+                    <div class = "card-footer text-muted">
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+{% endblock %}

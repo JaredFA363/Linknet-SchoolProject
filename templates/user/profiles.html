@@ -1,0 +1,42 @@
+{% extends 'base.html'%}
+{% block body %}
+{% if user %}
+    <h4>{{ user.username }}</h4>
+{%else%}
+    <h4>User Not Found</h4>
+{% endif %}
+{% if not g.user.is_friending(user) %}
+    <a href="{{ url_for('friend',username=user.username)}}">Friend</a>
+{% else %}
+    <a href="{{url_for('unfriend',username=user.username)}}">Unfriend</a>
+{% endif %}
+<br>
+<h4> {{user.username}} posts:</h4>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <p>{{msg}}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}  
+{%for post in user.posts %}
+<br>
+<div class ="col-sm-8">
+    <div class="card">
+        <label for="dummy1"></label>
+        <div class = "card-header">
+            <strong>
+            </strong> Link Posted <span class="text-muted" style="font-size: 10pt;"><li class = "list-group-item">by {{post.post_author}} on {{ post.create_date }}</li></span>
+        </div>
+        <div class="card-body">
+            <h5 class = "card-title"><li class = "list-group-item">{{ post.title }}</li></h5>
+            <p class ="card-text">
+                <li class = "list-group-item">{{ post.body }}</li>
+            </p>
+        </div>
+        <div class = "card-footer text-muted">
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

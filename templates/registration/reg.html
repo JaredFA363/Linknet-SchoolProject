@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block head%}
+<title>Linknet - Sign up</title>
+<style>
+    body{
+        background: #dae0e6 !important;
+        margin-top:200px !important;
+    }
+
+    .form-control {
+        margin-bottom: 5px ;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class ="row">
+        <div class ="col-md-4"></div>
+        <div class="col-md-4">
+            <div class = "card">
+                <div class="card-header">
+                    Sign up
+                </div>
+                <div class = "card-body">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for msg in messages %}
+                                <p>{{msg}}</p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}  
+                    <form class="form" action="/signup" method="POST">
+                        <input class="form-control" name="username" type="text" placeholder="Username">
+                        <input class="form-control" name="email" type="email" placeholder="Email">
+                        <input class="form-control" name="password" type="password" placeholder="Password">
+                        <input class="form-control" name ="confirm-password" type="password" placeholder="Confirm Password">
+                        <br>
+                        <button type="submit" class="btn btn-primary">Sign Up</button>                        
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+{% endblock %}

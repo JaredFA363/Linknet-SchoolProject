@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Messages</title>
+    </head>
+    <body>
+    <div id = 'main-section'>
+
+        <nav id = 'sidebar'>
+            <h4>Rooms</h4>
+            {% for room in rooms %}
+                <a class = "select-room">{{ room|title }}</a>
+                <br>
+            {% endfor %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <p>{{msg}}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}  
+        </nav>
+        <div id = "rightside-pannel">
+            <div id = "display-message-section">
+
+            </div>
+            <div id = "input-area">
+                <form class="form" method="POST">
+                    <input type="text" name="CreateRoom" placeholder="Create Room name">
+                    <input type="text" name = "AddUser" placeholder="Add User">
+                    <button type="submit">Send</button>
+                </form>
+                <br>
+                <br>
+                <input type ="text" id = "user_message" placeholder = "message" autocomplete="off"/>
+                <button type ="button" id = "send_message">Send</button>
+            </div>
+        </div>
+    </div>
+    <script type = "text/javascript">
+        const username =`{{ username }}`;
+    </script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script src = "{{url_for('static', filename = 'socketio.js')}}"></script>
+    </body>
+    <span id="get-username">{{ username }}</span>
+</html>         
+
