@@ -11,6 +11,10 @@ Social Media Project made with Python - flask, Html & JavaScript
 ## Demos
 
 
+https://user-images.githubusercontent.com/52663734/196193613-9e7b5a90-c719-4870-843a-2012c01dae2b.mp4
+
+
+
 
 ## Other 
 - Documentation included
